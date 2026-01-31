@@ -1,12 +1,13 @@
 *git status*   //should be using this frequently
 
 
+//These are for pushing all of your changing onto git hub
 git add *
 git commit -m "comments of what you are going to push"
 git push
+//
 
-
-
+//This is how you pull any new changes
 git pull
 
 
