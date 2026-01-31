@@ -1,0 +1,12 @@
+*git status*   //should be using this frequently
+
+
+git add *
+git commit -m "comments of what you are going to push"
+git push
+
+
+
+git pull
+
+
