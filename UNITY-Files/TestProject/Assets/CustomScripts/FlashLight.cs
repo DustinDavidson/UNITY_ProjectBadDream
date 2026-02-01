@@ -6,6 +6,8 @@ public class FlashLight : MonoBehaviour
     public bool isOn = false;
     public float batteryLife = 100f; // battery life percentages
     public float drainRate = 0.2f; // battery drain per second
+    public float rechargeRate = 0.25f; // battery recharge per second
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -26,6 +28,11 @@ public class FlashLight : MonoBehaviour
         if (isOn)
         {
             DrainBattery();
+        }
+
+        if (Input.GetKey(KeyCode.R))
+        {
+            RechargeBattery();
         }
     }
 
@@ -61,6 +68,17 @@ public class FlashLight : MonoBehaviour
                 isOn = false;
                 Debug.Log("Battery dead. Flashlight turned OFF");
             }
+        }
+    }
+
+    public void RechargeBattery()
+    {
+        batteryLife += rechargeRate;
+        batteryLife = Mathf.Clamp(batteryLife, 0, 100);
+        Debug.Log("Battery recharging. Current battery life: " + batteryLife + "%");
+        if(batteryLife == 100)
+        {
+            Debug.Log("Battery fully charged.");
         }
     }
 
