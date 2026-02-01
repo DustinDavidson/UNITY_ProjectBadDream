@@ -14,9 +14,9 @@ public class Door : MonoBehaviour
         // Update logic here
     }
 
-    public void TryOpenDoor(Player player, FlashLight flashlight)
+    public void TryOpenDoor(Player player)
     {
-        if (player.hasKey && flashlight.isOn)
+        if (player.hasKey)
         {
             isOpen = true;
             Debug.Log("Door opened!");
@@ -25,13 +25,9 @@ public class Door : MonoBehaviour
         {
             Debug.Log("Player does not have the key.");
         }
-        else if (!flashlight.isOn)
-        {
-            Debug.Log("Flashlight is off.");
-        }
         else
         {
-            Debug.Log("Cannot open door. Key missing and flashlight is off.");
+            Debug.Log("Player reference is null.");
         }
     }
 }
