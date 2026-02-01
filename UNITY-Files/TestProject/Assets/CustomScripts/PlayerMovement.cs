@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 // Make sure the player has a Rigidbody
@@ -8,14 +9,16 @@ public class PlayerMovement : MonoBehaviour
     public float handReach = 3f; // Distance the player can reach with their hand
     public float moveSpeed = 5f;
     public float jumpForce = 5f;
-    GameObject heldItem;
+    GameObject heldItem; // Currently held item
 
     [Header("Mouse Settings")]
-    public Transform cameraTransform;
+    public Transform cameraTransform; // Reference to the player's camera
     public float mouseSensitivity = 2f;
 
     private Rigidbody rb;
-    private float xRotation = 0f;
+    private Player player; // Reference to Player class
+    private Door door; // Reference to Door class
+    private float xRotation = 0f; //    
 
     private float horizontalInput;
     private float verticalInput;
@@ -23,6 +26,7 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        player = GetComponent<Player>();
         // Prevent player from tipping over
         rb.freezeRotation = true;
         // Lock cursor to center
@@ -70,16 +74,11 @@ public class PlayerMovement : MonoBehaviour
     }
 
     // --- Item Pickup Logic ---
-    // --- Item Pickup Logic ---
     void TryPickup()
     {
         Debug.Log("E key pressed - attempting pickup");
         
-        if (heldItem != null)
-        {
-            Debug.Log("Already holding an item");
-            return; // already holding an item
-        }
+        
 
         RaycastHit hit;
 
@@ -87,15 +86,46 @@ public class PlayerMovement : MonoBehaviour
         {
             Debug.Log("Raycast hit: " + hit.collider.gameObject.name + " at distance " + hit.distance);
             Debug.Log("Object tag: " + hit.collider.tag);
-            
-            if (hit.collider.CompareTag("PickUp"))
+
+            string tag = hit.collider.tag;
+            switch (tag)
             {
-                Debug.Log("Tag matched! Picking up object");
-                PickupObject(hit.collider.gameObject);
-            }
-            else
-            {
-                Debug.Log("Tag doesn't match. Expected 'PickUp', got '" + hit.collider.tag + "'");
+                case "PickUp":
+                    if (heldItem != null)
+                    {
+                        Debug.Log("Already holding an item");
+                        return;
+                    }
+                    Debug.Log("Tag matched! Picking up object");
+                    PickupObject(hit.collider.gameObject);
+                    break;
+
+                case "KEY":
+                    Debug.Log("Key object detected. Picking up key.");
+                    if (player != null)
+                    {
+                        player.AddItem(hit.collider.gameObject.name);
+                    }
+                    hit.collider.gameObject.SetActive(false);
+                    break;
+
+                case "DOOR":
+                    // Get the Door component from the object the ray hit
+                    Door hitDoor = hit.collider.GetComponent<Door>();
+                    if (hitDoor != null)
+                    {
+                        hitDoor.TryOpenDoor(player);
+                    }
+                    else
+                    {
+                        Debug.Log("The object hit doesn't have a Door component!");
+                    }
+                    break;
+
+
+                default:
+                    Debug.Log("Tag doesn't match. Expected 'PickUp', or 'KEY' got '" + tag + "'");
+                    break;
             }
         }
         else
@@ -116,7 +146,7 @@ public class PlayerMovement : MonoBehaviour
         }
         obj.transform.SetParent(handPoint);
         obj.transform.localPosition = Vector3.zero;
-        obj.transform.localRotation = Quaternion.identity;
+        obj.transform.localRotation = Quaternion.Euler(0, -90, 0);
         Debug.Log("Picked up " + obj.name);
     }
 
