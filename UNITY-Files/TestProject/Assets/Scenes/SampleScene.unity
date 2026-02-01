@@ -678,6 +678,37 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_RenderingLayers: 1
   m_ShadowRenderingLayers: 1
+--- !u!1 &482110319
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 482110320}
+  m_Layer: 0
+  m_Name: '"Hand"'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &482110320
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 482110319}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.543, y: 0.489, z: 0.852}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 825332126}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &510778411 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -3778644264426962316, guid: 803c257f07a0d5949a4c0bc6a2e2fe8d, type: 3}
@@ -908,6 +939,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: FlashLight
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 6b8046f8bb5678c469d9c819326076d0, type: 3}
+      propertyPath: m_TagString
+      value: PickUp
+      objectReference: {fileID: 0}
     - target: {fileID: 3336182266008515235, guid: 6b8046f8bb5678c469d9c819326076d0, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -922,7 +957,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 6b8046f8bb5678c469d9c819326076d0, type: 3}
       insertIndex: -1
       addedObject: {fileID: 220238419}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 6b8046f8bb5678c469d9c819326076d0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1826927676}
   m_SourcePrefab: {fileID: 100100000, guid: 6b8046f8bb5678c469d9c819326076d0, type: 3}
 --- !u!1 &825332119
 GameObject:
@@ -958,6 +996,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b881e7252f483548a0b7a152d122c5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  handPoint: {fileID: 482110320}
+  handReach: 10
   moveSpeed: 5
   jumpForce: 5
   cameraTransform: {fileID: 1068264207}
@@ -1073,6 +1113,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1068264207}
+  - {fileID: 482110320}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!136 &825332127
@@ -2775,11 +2816,43 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -5045698225522148637, guid: f4791225ec2777c40bd346468a63936c, type: 3}
   m_PrefabInstance: {fileID: 1630575206}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1826927674 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 6b8046f8bb5678c469d9c819326076d0, type: 3}
+  m_PrefabInstance: {fileID: 819067146}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1826927675 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 6b8046f8bb5678c469d9c819326076d0, type: 3}
   m_PrefabInstance: {fileID: 819067146}
   m_PrefabAsset: {fileID: 0}
+--- !u!54 &1826927676
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1826927674}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &2052197075 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -1599826595754709761, guid: 803c257f07a0d5949a4c0bc6a2e2fe8d, type: 3}
