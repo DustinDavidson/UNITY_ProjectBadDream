@@ -4,25 +4,28 @@ public class FlashLight : MonoBehaviour
 {
     public Light flashlight;
     public bool isOn = false;
-    public int batteryLife = 100;
-    public int drainRate = 5; // battery drain per second
+    public float batteryLife = 100f; // battery life percentages
+    public float drainRate = 0.2f; // battery drain per second
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        flashlight.enabled = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (isOn)
-        {
-            DrainBattery();
-        }
-
         if (Input.GetKeyDown(KeyCode.F))
         {
             ToggleFlashlight();
+        }
+    }
+
+    void FixedUpdate()
+    {
+        if (isOn)
+        {
+            DrainBattery();
         }
     }
 
