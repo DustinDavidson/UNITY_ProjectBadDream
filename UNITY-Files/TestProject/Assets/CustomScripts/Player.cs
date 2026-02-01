@@ -15,12 +15,7 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        // Pickup key
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            hasKey = true;
-            Debug.Log("Picked up key!");
-        }
+        // Placeholder for future player updates
     }
 
     public void Heal(int amount)
