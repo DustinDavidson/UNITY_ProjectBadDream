@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Door : MonoBehaviour
 {
+    public string doorID;
     public bool isLocked = true;
     public bool isOpen = false;
     public string requiredKeyName = "Keys";  // Name of the key item needed
