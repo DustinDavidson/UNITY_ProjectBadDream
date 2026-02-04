@@ -544,7 +544,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6195479ae09f97c49a0c68db52f2d54b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::KeyObject
-  keyName: FrontDoorKey
+  itemData: {fileID: 0}
 --- !u!1 &482110319
 GameObject:
   m_ObjectHideFlags: 0
@@ -1111,7 +1111,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player
   maxHealth: 100
-  inventory: []
 --- !u!23 &825332124
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1881,7 +1880,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!64 &1067563756
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -2248,6 +2247,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f92c93a989ffc884d875fae5b18541dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Door
+  doorID: 
   isLocked: 1
   isOpen: 0
   requiredKeyName: FrontDoorKey

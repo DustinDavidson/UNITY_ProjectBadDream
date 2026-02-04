@@ -39,7 +39,7 @@ public class FlashLight : MonoBehaviour
             DrainBattery();
         }
         // Recharge battery while holding the R key
-        if (Input.GetKey(KeyCode.R))
+        if (Input.GetKey(KeyCode.R) && heldByPlayer)
         {
             RechargeBattery();
         }

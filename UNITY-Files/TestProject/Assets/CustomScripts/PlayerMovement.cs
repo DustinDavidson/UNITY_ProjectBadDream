@@ -88,7 +88,7 @@ public class PlayerMovement : MonoBehaviour
         
         // Cast multiple rays in a cone pattern 
         float coneAngle = 5f;       // total cone width in degrees
-        int numRays = 4;             // how many rays across the cone
+        int numRays = 3;             // how many rays across the cone
         float angleStep = coneAngle / (numRays - 1);
         float startAngle = -coneAngle / 2f; // start at left edge of cone
 
@@ -107,8 +107,6 @@ public class PlayerMovement : MonoBehaviour
                 
                 // Calculate the ray direction
                 Vector3 rayDir = rot * Camera.main.transform.forward;
-
-                Debug.DrawRay(Camera.main.transform.position, rayDir * handReach, Color.red, 1f);
 
                 // Cast the ray
                 if (Physics.Raycast(Camera.main.transform.position, rayDir, out hit, handReach))
@@ -130,10 +128,19 @@ public class PlayerMovement : MonoBehaviour
                             Debug.Log("Key object detected. Picking up key.");
                             if (player != null)
                             {
-                                player.AddItem(hit.collider.gameObject.name);
+                                KeyObject keyComp = hit.collider.GetComponent<KeyObject>();
+                                if (keyComp != null)
+                                {
+                                    player.AddItem(keyComp.itemData); // pass the ScriptableObject
+                                }
+                                else
+                                {
+                                    Debug.LogWarning("Key prefab is missing the KeyObject component!");
+                                }
                             }
-                            hit.collider.gameObject.SetActive(false);
+                            hit.collider.gameObject.SetActive(false); // hide the key in the world
                             return;
+
 
                         case "DOOR":
                             Door hitDoor = hit.collider.GetComponent<Door>();
@@ -228,12 +235,15 @@ public class PlayerMovement : MonoBehaviour
         }
 
         Rigidbody objRb = heldItem.GetComponent<Rigidbody>();
+        heldItem.transform.position = handPoint.position + handPoint.forward * 0.5f + Vector3.up * 0.2f;
+
+        heldItem.transform.SetParent(null);
         if (objRb != null)
         {
             objRb.isKinematic = false;
         }
 
-        heldItem.transform.SetParent(null);
+        
         heldItem = null;
         
         Debug.Log("Dropped item.");
