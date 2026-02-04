@@ -4,7 +4,7 @@ using UnityEngine;
 public class KeyObject : MonoBehaviour
 {
 
-    public string keyName = "HouseKey";
+    public string keyName = "Key";  // Name of the key item
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

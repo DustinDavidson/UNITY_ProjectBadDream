@@ -2,22 +2,29 @@ using UnityEngine;
 
 public class FlashLight : MonoBehaviour
 {
-    public Light flashlight; // reference to the Light component
     public bool isOn = false; // flashlight state
     public float batteryLife = 100f; // battery life percentages
     public float drainRate = 0.2f; // battery drain per second
     public float rechargeRate = 0.25f; // battery recharge per second
+    public bool heldByPlayer = false; // is the flashlight held by the player
+    private Light flashlight;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        flashlight = GetComponent<Light>();
         flashlight.enabled = false;
+        
     }
 
     // Update is called once per frame
     void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.F))
+    {   
+        if (!heldByPlayer)
+        {
+            return;
+        }
+        else if (Input.GetKeyDown(KeyCode.F))
         {
             ToggleFlashlight();
         }
@@ -87,6 +94,18 @@ public class FlashLight : MonoBehaviour
         {
             Debug.Log("Battery fully charged.");
         }
+    }
+
+    public void OnPickedUp()
+    {
+        heldByPlayer = true;
+        Debug.Log("✅ OnPickedUp() called - heldByPlayer is now TRUE");
+    }
+
+    public void OnDropped()
+    {
+        heldByPlayer = false;
+        Debug.Log("Flashlight dropped by player.");
     }
 
 }

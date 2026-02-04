@@ -5,8 +5,7 @@ public class Player : MonoBehaviour
 {
     private int health;
     public int maxHealth = 100;
-    public bool hasKey = false;
-    public List<string> inventory = new List<string>(10);
+    public List<string> inventory = new List<string>(5);
 
     void Start()
     {
@@ -47,10 +46,9 @@ public class Player : MonoBehaviour
             return;
         }
         inventory.Add(itemName);
-        Debug.Log("Item added to inventory: " + itemName);
+        Debug.Log("Item added to inventory: " + itemName + ". Total items: " + inventory.Count + "/5");
         if(itemName == "KEY"){
-            hasKey = true;
-            Debug.Log("Player picked up the key.");
+            Debug.Log("Player picked up a key.");
         }
         else{
             Debug.Log("Player picked up an item: " + itemName);
