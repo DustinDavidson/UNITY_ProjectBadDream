@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 // Make sure the player has a Rigidbody
@@ -6,7 +5,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     public Transform handPoint; // Point where the player holds items
-    public float handReach = 2.5f; // Distance the player can reach with their hand
+    public float handReach = 1.5f; // Distance the player can reach with their hand
     public float moveSpeed = 5f;
     public float sprintMultiplier = 1.5f;
     public float jumpForce = 4f;
@@ -42,6 +41,11 @@ public class PlayerMovement : MonoBehaviour
         {
             TryPickup();
         }
+
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            DropObject();
+        }
            
         // --- Mouse Look ---
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * 100f * Time.deltaTime;
@@ -63,7 +67,9 @@ public class PlayerMovement : MonoBehaviour
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
+    
     }
+
 
     void FixedUpdate()
     {
@@ -81,8 +87,8 @@ public class PlayerMovement : MonoBehaviour
         Debug.Log("E key pressed - attempting pickup");
         
         // Cast multiple rays in a cone pattern 
-        float coneAngle = 30f;       // total cone width in degrees
-        int numRays = 5;             // how many rays across the cone
+        float coneAngle = 5f;       // total cone width in degrees
+        int numRays = 4;             // how many rays across the cone
         float angleStep = coneAngle / (numRays - 1);
         float startAngle = -coneAngle / 2f; // start at left edge of cone
 
@@ -96,18 +102,17 @@ public class PlayerMovement : MonoBehaviour
                 float pitch = startAngle + j * angleStep; // vertical rotation
 
                 // Combine rotations into a single direction
-                Quaternion rot = Quaternion.AngleAxis(yaw, Vector3.up) * Quaternion.AngleAxis(pitch, Camera.main.transform.right);
+                Quaternion rot = Quaternion.AngleAxis(yaw, Vector3.up) * 
+                                 Quaternion.AngleAxis(pitch, Camera.main.transform.right);
+                
+                // Calculate the ray direction
                 Vector3 rayDir = rot * Camera.main.transform.forward;
 
-                // Draw the ray so you can see it in the Scene view
-                Debug.DrawRay(Camera.main.transform.position, rayDir * handReach, Color.red, 0.1f);
+                Debug.DrawRay(Camera.main.transform.position, rayDir * handReach, Color.red, 1f);
 
                 // Cast the ray
                 if (Physics.Raycast(Camera.main.transform.position, rayDir, out hit, handReach))
                 { 
-                    Debug.Log("Raycast hit: " + hit.collider.gameObject.name + " at distance " + hit.distance);
-                    Debug.Log("Object tag: " + hit.collider.tag);
-
                     string tag = hit.collider.tag;
                     switch (tag)
                     {
@@ -119,7 +124,7 @@ public class PlayerMovement : MonoBehaviour
                             }
                             Debug.Log("Tag matched! Picking up object");
                             PickupObject(hit.collider.gameObject);
-                            break;
+                            return;
 
                         case "KEY":
                             Debug.Log("Key object detected. Picking up key.");
@@ -128,51 +133,110 @@ public class PlayerMovement : MonoBehaviour
                                 player.AddItem(hit.collider.gameObject.name);
                             }
                             hit.collider.gameObject.SetActive(false);
-                            break;
+                            return;
 
                         case "DOOR":
-                            // Get the Door component from the object the ray hit
                             Door hitDoor = hit.collider.GetComponent<Door>();
+                            
+                            // If not found, check the parent
+                            if (hitDoor == null)
+                            {
+                                hitDoor = hit.collider.GetComponentInParent<Door>();
+                            }
+                            
                             if (hitDoor != null)
                             {
-                                hitDoor.TryOpenDoor(player);
+                                hitDoor.ToggleDoor();
                             }
                             else
                             {
-                                Debug.Log("The object hit doesn't have a Door component!");
+                                Debug.Log("The object '" + hit.collider.gameObject.name + "' doesn't have a Door component!");
                             }
-                            break;
+                            return;
 
+                        case "LOCK":
+                            Door doorComponent = hit.collider.GetComponent<Door>();
+                            
+                            // If not found, check the parent
+                            if (doorComponent == null)
+                            {
+                                doorComponent = hit.collider.GetComponentInParent<Door>();
+                            }
+                            
+                            if (doorComponent != null)
+                            {
+                                doorComponent.LockToggle(player);
+                            }
+                            else
+                            {
+                                Debug.Log("The object '" + hit.collider.gameObject.name + "' doesn't have a Door component!");
+                            }
+                            return;
 
                     default:
-                        Debug.Log("Tag doesn't match. Expected 'PickUp', or 'KEY' got '" + tag + "'");
                         break;
-                }
-            }
-                else
-                {
-                    Debug.Log("Raycast didn't hit anything within range");
-                }
+                    }
                 }
             }
         }
-
+    }
         
-
     // --- Pick Up Object ---
-    void PickupObject(GameObject obj)
+   void PickupObject(GameObject obj)
     {
         heldItem = obj;
-
-        Rigidbody rb = obj.GetComponent<Rigidbody>();
-        if (rb != null)
+        
+        Rigidbody objRb = obj.GetComponent<Rigidbody>();
+        if (objRb != null)
         {
-            rb.isKinematic = true; // disable physics
+            objRb.isKinematic = true;
         }
+        
         obj.transform.SetParent(handPoint);
         obj.transform.localPosition = Vector3.zero;
-        obj.transform.localRotation = Quaternion.Euler(0, -90, 0);
+        obj.transform.localRotation = Quaternion.Euler(0, -95, 0);
+        
+        // Notify the flashlight it's been picked up
+        FlashLight flashlight = obj.GetComponentInChildren<FlashLight>();
+        if (flashlight != null)
+        {
+            Debug.Log("✅ FlashLight component FOUND on " + obj.name);  // ⭐ ADD THIS
+            flashlight.OnPickedUp();
+            Debug.Log("✅ OnPickedUp() was CALLED");  // ⭐ ADD THIS
+        }
+        else
+        {
+            Debug.Log("❌ NO FlashLight component on " + obj.name);  // ⭐ ADD THIS
+        }
+        
         Debug.Log("Picked up " + obj.name);
+    }
+
+    void DropObject()
+    {
+        if (heldItem == null)
+        {
+            Debug.Log("No item to drop.");
+            return;
+        }
+
+        // Notify the flashlight it's been dropped
+        FlashLight flashlight = heldItem.GetComponentInChildren<FlashLight>();
+        if (flashlight != null)
+        {
+            flashlight.OnDropped();
+        }
+
+        Rigidbody objRb = heldItem.GetComponent<Rigidbody>();
+        if (objRb != null)
+        {
+            objRb.isKinematic = false;
+        }
+
+        heldItem.transform.SetParent(null);
+        heldItem = null;
+        
+        Debug.Log("Dropped item.");
     }
 
     // --- Ground Check ---
