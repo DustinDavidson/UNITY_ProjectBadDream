@@ -7,6 +7,7 @@ public class FlashLight : MonoBehaviour
     public float drainRate = 0.2f; // battery drain per second
     public float rechargeRate = 0.25f; // battery recharge per second
     public bool heldByPlayer = false; // is the flashlight held by the player
+    public float startDim = 40;
     private Light flashlight;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -75,6 +76,12 @@ public class FlashLight : MonoBehaviour
             batteryLife -= drainRate;
             batteryLife = Mathf.Clamp(batteryLife, 0, 100);
             Debug.Log("Battery draining. Current battery life: " + batteryLife + "%");
+
+            if (batteryLife < startDim)
+            {
+                flashlight.intensity -= (batteryLife / 100f) * Time.deltaTime;
+            }
+
             if(batteryLife == 0)
             {
                 isOn = false;
@@ -90,6 +97,10 @@ public class FlashLight : MonoBehaviour
         batteryLife += rechargeRate;
         batteryLife = Mathf.Clamp(batteryLife, 0, 100);
         Debug.Log("Battery recharging. Current battery life: " + batteryLife + "%");
+        if ( batteryLife >= startDim)
+        {
+            flashlight.intensity = 1;
+        }
         if(batteryLife == 100)
         {
             Debug.Log("Battery fully charged.");
