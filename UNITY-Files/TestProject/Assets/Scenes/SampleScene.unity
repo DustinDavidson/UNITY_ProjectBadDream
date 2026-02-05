@@ -20,7 +20,7 @@ RenderSettings:
   m_FogDensity: 0.01
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0, g: 0, b: 0, a: 1}
+  m_AmbientSkyColor: {r: 0.047169805, g: 0.047169805, b: 0.047169805, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
@@ -3441,9 +3441,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FlashLight
   isOn: 0
   batteryLife: 100
-  drainRate: 0.2
-  rechargeRate: 0.25
+  drainRate: 7
+  rechargeRate: 10
   heldByPlayer: 0
+  startDim: 35
 --- !u!114 &1991122193
 MonoBehaviour:
   m_ObjectHideFlags: 0
