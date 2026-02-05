@@ -69,40 +69,42 @@ public class FlashLight : MonoBehaviour
     // Drain battery life over time
     public void DrainBattery()
     {
+        if (!isOn)
+            return;
+
+        batteryLife -= drainRate * Time.deltaTime;
         batteryLife = Mathf.Clamp(batteryLife, 0f, 100f);
-        if(isOn && batteryLife > 0)
+
+        UpdateIntensity();
+
+        if (batteryLife <= 0f)
         {
-            batteryLife -= drainRate * Time.deltaTime;
-            batteryLife = Mathf.Clamp(batteryLife, 0, 100);
-            Debug.Log("Battery draining. Current battery life: " + batteryLife + "%");
-
-            
-            float brightness = batteryLife / startDim;
-            brightness = Mathf.Clamp(brightness, 0f, 1f);
-            flashlight.intensity = brightness * maxBrightness;
-            
-
-            if(batteryLife <= 0f)
-            {
-                isOn = false;
-                flashlight.enabled = false;
-                Debug.Log("Battery dead. Flashlight turned OFF");
-            }
+            isOn = false;
+            flashlight.enabled = false;
         }
     }
+
 
     // Recharge battery life over time
     public void RechargeBattery()
     {
         batteryLife += rechargeRate * Time.deltaTime;
-        batteryLife = Mathf.Clamp(batteryLife, 0, 100);
-        Debug.Log("Battery recharging. Current battery life: " + batteryLife + "%");
+        batteryLife = Mathf.Clamp(batteryLife, 0f, 100f);
 
-        if(batteryLife == 100)
-        {
-            Debug.Log("Battery fully charged.");
-        }
+        UpdateIntensity();
     }
+
+
+
+    // Function to change the intensity of the flashlight
+    void UpdateIntensity()
+        {
+            float brightness = batteryLife / startDim;
+            brightness = Mathf.Clamp(brightness, 0f, 1f);
+            flashlight.intensity = brightness * maxBrightness;
+        }
+
+    
 
     public void OnPickedUp()
     {
