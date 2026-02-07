@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     public Transform handPoint; // Point where the player holds items
+    public Vector3 screenOffset = new Vector3(0.3f,-0.3f,0.5f);
     public float handReach = 1.5f; // Distance the player can reach with their hand
     public float moveSpeed = 5f;
     public float sprintMultiplier = 1.5f;
@@ -81,6 +82,16 @@ public class PlayerMovement : MonoBehaviour
         rb.linearVelocity = new Vector3(horizontalVelocity.x, rb.linearVelocity.y, horizontalVelocity.z);
     }
 
+    void LateUpdate()
+    {
+        // lock position to camera
+        handPoint.position = cameraTransform.position + cameraTransform.right * screenOffset.x + cameraTransform.up * screenOffset.y + cameraTransform.forward * screenOffset.z;
+
+        // copy rotation
+        handPoint.rotation = Quaternion.LookRotation(cameraTransform.forward);
+    }
+
+
     // --- Item Pickup Logic ---
     void TryPickup()
     {
@@ -88,7 +99,7 @@ public class PlayerMovement : MonoBehaviour
         
         // Cast multiple rays in a cone pattern 
         float coneAngle = 5f;       // total cone width in degrees
-        int numRays = 3;             // how many rays across the cone
+        int numRays = 4;             // how many rays across the cone
         float angleStep = coneAngle / (numRays - 1);
         float startAngle = -coneAngle / 2f; // start at left edge of cone
 
@@ -198,6 +209,12 @@ public class PlayerMovement : MonoBehaviour
         {
             objRb.isKinematic = true;
         }
+
+        Collider col = obj.GetComponent<Collider>();
+        if (col != null)
+        {
+            col.enabled = false;
+        }
         
         obj.transform.SetParent(handPoint);
         obj.transform.localPosition = Vector3.zero;
@@ -235,12 +252,18 @@ public class PlayerMovement : MonoBehaviour
         }
 
         Rigidbody objRb = heldItem.GetComponent<Rigidbody>();
+        Collider col = heldItem.GetComponent<Collider>();
         heldItem.transform.position = handPoint.position + handPoint.forward * 0.5f + Vector3.up * 0.2f;
 
         heldItem.transform.SetParent(null);
         if (objRb != null)
         {
             objRb.isKinematic = false;
+        }
+
+        if (col != null)
+        {
+            col.enabled = false;
         }
 
         

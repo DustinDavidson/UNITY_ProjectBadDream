@@ -3,14 +3,14 @@ using System.Collections.Generic;
 
 public class Player : MonoBehaviour
 {
-    private int health;
+    public int health;
     public int maxHealth = 100;
     public List<ItemInstance> inventory = new List<ItemInstance>(5);
     public Dictionary<string, ItemInstance> inventoryLookup = new Dictionary<string, ItemInstance>();
 
     void Start()
     {
-        health = maxHealth;
+        //health = maxHealth;
         Debug.Log("Player initialized with health: " + health + "/" + maxHealth);
         
     }
