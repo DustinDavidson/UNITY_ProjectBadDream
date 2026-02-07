@@ -4,6 +4,7 @@ public class FlashLight : MonoBehaviour
 {
     public bool isOn = false; // flashlight state
     public float batteryLife = 100f; // battery life percentages
+    public float maxBattery = 100f; // max allowable battery percentage
     public float drainRate = 3f; // battery drain per second
     public float rechargeRate = 5f; // battery recharge per second
     public bool heldByPlayer = false; // is the flashlight held by the player
@@ -17,6 +18,7 @@ public class FlashLight : MonoBehaviour
         flashlight = GetComponent<Light>();
         flashlight.enabled = false;
         flashlight.intensity = maxBrightness;
+        batteryLife = maxBattery;
     }
 
     // Update is called once per frame
@@ -73,7 +75,7 @@ public class FlashLight : MonoBehaviour
             return;
 
         batteryLife -= drainRate * Time.deltaTime;
-        batteryLife = Mathf.Clamp(batteryLife, 0f, 100f);
+        batteryLife = Mathf.Clamp(batteryLife, 0f, maxBattery);
 
         UpdateIntensity();
 
@@ -89,7 +91,7 @@ public class FlashLight : MonoBehaviour
     public void RechargeBattery()
     {
         batteryLife += rechargeRate * Time.deltaTime;
-        batteryLife = Mathf.Clamp(batteryLife, 0f, 100f);
+        batteryLife = Mathf.Clamp(batteryLife, 0f, maxBattery);
 
         UpdateIntensity();
     }
