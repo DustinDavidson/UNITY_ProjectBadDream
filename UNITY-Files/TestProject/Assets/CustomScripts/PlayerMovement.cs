@@ -263,7 +263,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (col != null)
         {
-            col.enabled = false;
+            col.enabled = true;
         }
 
         
