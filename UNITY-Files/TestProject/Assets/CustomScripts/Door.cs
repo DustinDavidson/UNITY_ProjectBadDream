@@ -6,6 +6,12 @@ public class Door : MonoBehaviour
     public bool isLocked = true;
     public bool isOpen = false;
     public string requiredKeyName = "Keys";  // Name of the key item needed
+    Animator animator;
+    
+    void Awake()
+    {
+        animator = GetComponent<Animator>();
+    }
 
     void Start()
     {
@@ -21,10 +27,17 @@ public class Door : MonoBehaviour
             Debug.Log("Player reference is null.");
             return;
         }
-        if (player.HasItem(requiredKeyName) && isLocked)
+        if (player.HasItem(requiredKeyName))
         {
-            isLocked = false;
-            Debug.Log("Door unlocked!");
+            isLocked = !isLocked;
+            if (isLocked)
+            {
+                Debug.Log("Door has been locked.");
+            }
+            else
+            {
+                Debug.Log("Door has been unlocked.");
+            }
         }
         else if (!player.HasItem(requiredKeyName))
         {
@@ -41,6 +54,7 @@ public class Door : MonoBehaviour
         if (!isLocked)
         {
             isOpen = !isOpen;
+            animator.SetBool("IsOpen", isOpen);
             Debug.Log("Door is now " + (isOpen ? "open." : "closed."));
         }
         else
