@@ -39,20 +39,6 @@ Bad Dream is a first-person horror game built in Unity 6. The project focuses on
 
 ## Getting Started
 
-### Required Asset Store Packages
-The following packages are **not included** in the repository and must be downloaded from the [Unity Asset Store](https://assetstore.unity.com/) before opening the project:
-
-| Package | Publisher |
-|---------|-----------|
-| Realistic Terrain Textures Lite | ALP Assets |
-| Basic Bedroom Pack | Mavi3D |
-| House Furniture Pack | (search by name) |
-| Cartoon Texture Pack | (search by name) |
-| Fantasy Skybox FREE | (search by name) |
-| Wallpaper, Carpet and CurtainFabric Materials Pack | Phoenix3D |
-
-After importing all packages, reimport the project if any assets appear pink/purple.
-
 ### Requirements
 - [Unity 6](https://unity.com/releases/unity-6) (6000.x)
 
