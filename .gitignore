@@ -1,9 +1,105 @@
-UNITY-Files/TestProject/Assets/ALP_Assets/
-UNITY-Files/TestProject/Assets/ALP_Assets/
-UNITY-Files/TestProject/Assets/BasicBedroomPack-Mavi3D/
-UNITY-Files/TestProject/Assets/HouseFurniturePack/
-UNITY-Files/TestProject/Assets/Cartoon_Texture_Pack/
-UNITY-Files/TestProject/Assets/Fantasy Skybox FREE/
-UNITY-Files/TestProject/Assets/Phoenix3D/
-UNITY-Files/TestProject/Library/
-UNITY-Files/TestProject/Temp/
+############################################
+# Unity Generated Folders (DO NOT TRACK)
+############################################
+
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+UserSettings/
+[Mm]emoryCaptures/
+
+############################################
+# Build Output & Executables
+############################################
+*.apk
+*.aab
+*.unitypackage
+*.app
+*.exe
+*.dll
+*.pdb
+*.so
+*.dylib
+
+############################################
+# Crash & Log Files
+############################################
+*.stackdump
+crash.log
+debug.log
+sysinfo.txt
+
+############################################
+# IDE & Editor Files
+############################################
+.vs/
+.vscode/
+.idea/
+*.iml
+*.suo
+*.tmp
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.VC.db
+.vsconfig
+
+############################################
+# OS Generated Files
+############################################
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+############################################
+# Asset Store & Third-Party Packages
+# (These should be downloaded via Asset Store or package manager, not tracked)
+############################################
+Assets/ALP_Assets/
+Assets/BasicBedroomPack-Mavi3D/
+Assets/Cartoon_Texture_Pack/
+Assets/CustomAssets/
+Assets/Fantasy\ Skybox\ FREE/
+Assets/Horror\ Elements/
+Assets/HouseFurniturePack/
+Assets/Phoenix3D/
+Assets/StarterAssets/
+
+############################################
+# Blender Files
+############################################
+*.blend1
+*.blend-backup
+
+############################################
+# Other Large/Temporary Files
+############################################
+allfiles.txt
+*.log
+*.tmp
+*.temp
+
+############################################
+# Project Settings & Packages (KEEP TRACKED)
+############################################
+!ProjectSettings/
+!Packages/
+
+############################################
+# Custom Assets & Scripts (KEEP TRACKED)
+############################################
+!Assets/CustomScripts/
+!Assets/Scenes/
+!Assets/Prefabs/
+!Assets/Images/
+!Assets/ItemData/
+!Assets/Settings/
+
+# Keep all .meta files (CRITICAL for Unity)
+!*.meta
