@@ -1,38 +1,9 @@
-# Asset Store Packs
+UNITY-Files/TestProject/Assets/ALP_Assets/
 UNITY-Files/TestProject/Assets/ALP_Assets/
 UNITY-Files/TestProject/Assets/BasicBedroomPack-Mavi3D/
 UNITY-Files/TestProject/Assets/HouseFurniturePack/
 UNITY-Files/TestProject/Assets/Cartoon_Texture_Pack/
 UNITY-Files/TestProject/Assets/Fantasy Skybox FREE/
 UNITY-Files/TestProject/Assets/Phoenix3D/
-
-# Unity generated folders
 UNITY-Files/TestProject/Library/
 UNITY-Files/TestProject/Temp/
-UNITY-Files/TestProject/Obj/
-UNITY-Files/TestProject/Build/
-UNITY-Files/TestProject/Builds/
-UNITY-Files/TestProject/Logs/
-UNITY-Files/TestProject/UserSettings/
-
-# Unity cache files
-UNITY-Files/TestProject/*.tmp
-UNITY-Files/TestProject/Assets/AssetStoreTools*
-
-# Visual Studio / Rider
-.vs/
-*.csproj
-*.unityproj
-*.sln
-*.suo
-*.user
-*.userprefs
-*.pidb
-*.booproj
-
-# OS files
-.DS_Store
-Thumbs.db
-
-# LFS
-*.lfs
