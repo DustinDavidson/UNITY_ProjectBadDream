@@ -84,6 +84,11 @@ allfiles.txt
 *.log
 *.tmp
 *.temp
+*.mp4
+*.mov
+*.avi
+*.mkv
+*.webm
 
 ############################################
 # Project Settings & Packages (KEEP TRACKED)
