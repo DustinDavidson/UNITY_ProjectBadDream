@@ -2,18 +2,15 @@ using UnityEngine;
 
 public class EnemyAI : MonoBehaviour
 {
-    public float moveSpeed = 1f;
+    public float moveSpeed = 2f;
 
-    public float rayDistance = 1f;
+    public float rayDistance = 3f;
 
     public int numRays = 5;
 
-    public float rotateSpeed = 30f;
+    public float rotateSpeed = 45f;
 
-    private float centerIndex;
-
-    private float weight;
-
+    
     private float rayDegree;
 
     private float verticalVelocity;
@@ -28,7 +25,6 @@ public class EnemyAI : MonoBehaviour
     {
         character = GetComponent<CharacterController>();
         rayDegree = 150f / (numRays - 1);
-        centerIndex = numRays / 2f;
     }
 
     void Update()
@@ -56,8 +52,11 @@ public class EnemyAI : MonoBehaviour
         character.Move(movement);
 
         
+        if(navigate.magnitude > 0.1f)
+        {
+            transform.Rotate(0f, navigate.y * rotateSpeed * Time.deltaTime, 0f);
+        }
         
-        transform.Rotate(0f, navigate.y * rotateSpeed, 0f);
         
 
         Debug.Log(navigate);
@@ -66,7 +65,8 @@ public class EnemyAI : MonoBehaviour
 
     Vector3 Navigate()
     {
-        
+        float centerIndex = numRays / 2f;
+
         Vector3 rayAngle = transform.forward;
         Vector3 navigate = new Vector3 (0, 0, 0);
 
@@ -74,18 +74,19 @@ public class EnemyAI : MonoBehaviour
 
         for(int i = 0; i < numRays; i++)
         {
+            float weight = 2 * (centerIndex - Mathf.Abs(centerIndex - i));
+
             RaycastHit hit;
             if(Physics.Raycast(character.transform.position, rayAngle, out hit, rayDistance))
             {
                 Debug.DrawRay(transform.position, rayAngle * rayDistance, Color.red);
-                navigate -= rayAngle * (1 / hit.distance) * Time.deltaTime * weight;
+                navigate -= rayAngle * (1 / hit.distance) * weight;
             }
             else
             {
                 Debug.DrawRay(transform.position, rayAngle * rayDistance, Color.green);
-                navigate += rayAngle * Time.deltaTime * weight;
             }
-            weight = centerIndex - Mathf.Abs(centerIndex - i); 
+             
 
             rayAngle = Quaternion.AngleAxis(rayDegree, Vector3.up) * rayAngle;
         }
