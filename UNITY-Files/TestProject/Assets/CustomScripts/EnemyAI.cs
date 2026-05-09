@@ -148,7 +148,6 @@ public class EnemyAI : MonoBehaviour
         // Cross product of forward and navigate gives a vector whose Y component
         // tells us whether to rotate left or right, and how much
         Vector3 result = Vector3.Cross(transform.forward, navigate);
-        Debug.Log(result.magnitude);
         return result;
     }
 

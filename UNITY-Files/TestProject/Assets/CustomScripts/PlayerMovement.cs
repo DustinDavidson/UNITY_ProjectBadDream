@@ -26,12 +26,15 @@ public class PlayerMovement : MonoBehaviour
 
     private float originalSpeed;
 
+    private float currentSpeed;
+
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         player = GetComponent<Player>();
 
+        currentSpeed = moveSpeed;
         originalSpeed = moveSpeed;
         // Prevent player from tipping over
         rb.freezeRotation = true;
@@ -76,7 +79,7 @@ public class PlayerMovement : MonoBehaviour
         // --- Sprint ---
         if (Input.GetKey(KeyCode.LeftShift))
         {
-            moveSpeed = sprintMultiplier * moveSpeed;
+            moveSpeed = sprintMultiplier * originalSpeed;
         }
         else
         {
@@ -94,6 +97,7 @@ public class PlayerMovement : MonoBehaviour
 
         // Preserve vertical velocity (gravity/jumping)
         rb.linearVelocity = new Vector3(horizontalVelocity.x, rb.linearVelocity.y, horizontalVelocity.z);
+
     }
 
     void LateUpdate()

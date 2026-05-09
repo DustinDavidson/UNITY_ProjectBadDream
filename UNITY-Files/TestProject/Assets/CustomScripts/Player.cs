@@ -5,12 +5,15 @@ public class Player : MonoBehaviour
 {
     public int health;
     public int maxHealth = 100;
+    public GameObject GameOverPanel;
+    public GameObject HudPanel;
     public List<ItemInstance> inventory = new List<ItemInstance>(5);
     public Dictionary<string, ItemInstance> inventoryLookup = new Dictionary<string, ItemInstance>();
 
     void Start()
     {
-        //health = maxHealth;
+        health = maxHealth;
+        GameOverPanel.SetActive(false);
         Debug.Log("Player initialized with health: " + health + "/" + maxHealth);
         
     }
@@ -34,8 +37,15 @@ public class Player : MonoBehaviour
         health = Mathf.Clamp(health, 0, maxHealth);
         Debug.Log("Took damage. Health = " + health + "/" + maxHealth);
 
+        if(health <= 0)
+        {
+            Die();
+        }
+
     }
 
+
+    
     // Function to check inventory for specifyed item
     public bool HasItem(string itemName)
     {
@@ -64,6 +74,12 @@ public class Player : MonoBehaviour
         }
     }
 
+    private void Die()
+    {
+        GameOverPanel.SetActive(true);
+        HudPanel.SetActive(false);
+        Cursor.lockState = CursorLockMode.Confined;
+    }
     
 }
 

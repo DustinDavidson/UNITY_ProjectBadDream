@@ -5,6 +5,7 @@ public class ChaseState : IEnemyState
     private float originalSpeed;
 
     private float lostTimer = 2f;
+    private float lostTimerReset = 2f;
 
 
     public void EnterState(EnemyAI enemy)
@@ -40,7 +41,7 @@ public class ChaseState : IEnemyState
         
         if(enemy.DetectPlayer())
         {
-            lostTimer = 2f; // reset timer when player is spotted
+            lostTimer = lostTimerReset; // reset timer when player is spotted
         }
         else
         {
@@ -50,6 +51,14 @@ public class ChaseState : IEnemyState
                 enemy.SwitchState(new WanderState());
             }
         }
+
+
+        if(Vector3.Distance(enemy.transform.position, enemy.player.transform.position) < 1f)
+        {
+            enemy.SwitchState(new AttackState());
+        }
+
+        
     }
 
     public void ExitState(EnemyAI enemy)

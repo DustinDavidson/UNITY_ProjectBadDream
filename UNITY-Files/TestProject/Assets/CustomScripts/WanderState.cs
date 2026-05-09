@@ -25,8 +25,6 @@ public class WanderState : IEnemyState
             enemy.SwitchState(new ChaseState());
         }
 
-        Debug.Log(navigate);
-
     }
 
     public void ExitState(EnemyAI enemy)
