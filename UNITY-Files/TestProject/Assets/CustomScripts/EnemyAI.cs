@@ -2,58 +2,53 @@ using UnityEngine;
 
 public class EnemyAI : MonoBehaviour
 {
+    public Player player; // Used to let the AI know what to chase
     public float moveSpeed = 2f;
 
-    public float forwardDistance = 3f;
+    public float forwardDistance = 5f;
 
-    public float rayDistance = 3f;  
+    public float rayDistance = 3.5f;  
 
     // Number of rays to cast in the navigation arc
-    public int numRays = 5;
+    public int numRays = 40;
 
-    public int forwardRays = 3;
+    public int forwardRays = 10;
 
-    public float rotateSpeed = 45f;
+    public float rotateSpeed = 1f;
 
-    public float rotationArc = 150f;
+    public float rotationArc = 180f;
 
-    public float forwardArc = 45f;
+    public float forwardArc = 10f;
 
-    private float backupTimer = 0f;
+    [Header("Detection Settings")]
 
-    // Angle between each ray, calculated from the total arc (150 degrees) divided by the number of gaps between rays
-    private float rayDegree;
+    public float detectRange = 20;
 
-    private float forwardDegree;
+    public int wCount = 5;
+
+    public int hCount = 5;
+
+    public float detectWidth = 90f;
+
+    public float detectHeight = 90f;
+
+    private IEnemyState currentState;
 
     // Tracks vertical speed, accumulates over time when airborne to simulate gravity
     private float verticalVelocity;
 
-    private CollisionFlags flags;
-
     private CharacterController character;
-    private Player player; // Will be used to spot the player later on
 
     void Start()
     {
         character = GetComponent<CharacterController>();
-
-        // Divide the 150 degree arc evenly between rays
-        // Using numRays - 1 so the first and last rays land exactly on the arc edges
-
-        /*
-        float target = Random.insideUnitSphere + transform.position;
-        target.y = transform.position.y; // Keep target on the same horizontal plane
-        */
-
+        currentState = new WanderState();
+        currentState.EnterState(this);
         
     }
 
     void Update()
     {
-        // Get the steering direction from the navigation raycasts
-        Vector3 navigate = Navigate();
-
         // Keep the enemy grounded with a small constant downward force
         // If airborne, accumulate gravity over time so it accelerates downward naturally
         if (character.isGrounded)
@@ -70,32 +65,28 @@ public class EnemyAI : MonoBehaviour
         Vector3 forwardVelocity = transform.forward * moveSpeed * Time.deltaTime;
         Vector3 movement = upwardVelocity + forwardVelocity;
 
-        
-
-        // Only rotate if the navigate vector is significant enough
-        // This prevents jittery spinning in open space where no walls are detected
-        if(navigate.magnitude > 0.1f)
-        {
-            // navigate.y is the result of the cross product, positive means turn right, negative means turn left
-            // Its magnitude determines how sharply to turn based on how close the nearest wall is
-            transform.Rotate(0f, navigate.y * rotateSpeed * Time.deltaTime, 0f);
-        }
-
+    
+        currentState.UpdateState(this);
         character.Move(movement);
-
-
-        /*
-        if(transform.position == target)
-        {
-            target = Random.insideUnitSphere + transform.position;
-        }
-        */
-
-        Debug.Log(navigate);
+         
     }
 
-    Vector3 Navigate()
+
+    public void SwitchState(IEnemyState newState)
     {
+        currentState.ExitState(this);
+        currentState = newState;
+        currentState.EnterState(this);   
+    }
+
+
+    public Vector3 Navigate()
+    {
+        // Angle between each ray, calculated from the total arc (150 degrees) divided by the number of gaps between rays
+        float rayDegree;
+
+        float forwardDegree;
+
         float centerIndex = numRays / 2f;
 
         rayDegree = rotationArc / (numRays - 1);
@@ -114,7 +105,7 @@ public class EnemyAI : MonoBehaviour
         int clearRays = 0;
         for(int i = 0; i < forwardRays; i++)
         {
-            if(!Physics.Raycast(character.transform.position, forwardAngle, forwardDistance))
+            if(!Physics.Raycast(transform.position, forwardAngle, forwardDistance))
             {
                 Debug.DrawRay(transform.position, forwardAngle * forwardDistance, Color.green);
                 clearRays++;
@@ -136,7 +127,7 @@ public class EnemyAI : MonoBehaviour
             float weight =  Mathf.Pow(centerIndex - Mathf.Abs(centerIndex - i), 2);
 
             RaycastHit hit;
-            if(Physics.Raycast(character.transform.position, rayAngle, out hit, rayDistance))
+            if(Physics.Raycast(transform.position, rayAngle, out hit, rayDistance))
             {
                 Debug.DrawRay(transform.position, rayAngle * rayDistance, Color.red);
 
@@ -156,6 +147,50 @@ public class EnemyAI : MonoBehaviour
 
         // Cross product of forward and navigate gives a vector whose Y component
         // tells us whether to rotate left or right, and how much
-        return Vector3.Cross(transform.forward, navigate);
+        Vector3 result = Vector3.Cross(transform.forward, navigate);
+        Debug.Log(result.magnitude);
+        return result;
+    }
+
+
+    public bool DetectPlayer()
+    {
+        Vector3 rayAngle = transform.forward;
+        rayAngle = Quaternion.AngleAxis(-(detectWidth / 2), transform.up) * rayAngle;
+        rayAngle = Quaternion.AngleAxis(-(detectHeight / 2), transform.right) * rayAngle;
+
+        Vector3 rowStartAngle = rayAngle;
+
+        float wDegree = detectWidth / (wCount - 1);
+        float hDegree = detectHeight / (hCount - 1);
+
+
+
+        for(int i = 0; i < hCount; i++)
+        {
+            for(int j = 0; j < wCount; j++)
+            {
+                RaycastHit hit;
+                if(Physics.Raycast(character.transform.position, rayAngle, out hit, detectRange))
+                {
+                    Debug.DrawRay(transform.position, rayAngle * detectRange, Color.green);
+                    if(hit.collider.tag == "Player")
+                    {
+                        Debug.DrawRay(transform.position, rayAngle * detectRange, Color.red);
+                        return true;
+                    }
+                }
+                else
+                {
+                    Debug.DrawRay(transform.position, rayAngle * detectRange, Color.green);
+                }
+                
+                rayAngle = Quaternion.AngleAxis(wDegree, transform.up) * rayAngle;
+            }
+            rayAngle = rowStartAngle;
+            rayAngle = Quaternion.AngleAxis(hDegree, transform.right) * rayAngle;
+            rowStartAngle = rayAngle;
+        }
+        return false;    
     }
 }

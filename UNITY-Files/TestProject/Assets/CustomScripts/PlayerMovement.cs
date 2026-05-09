@@ -7,7 +7,7 @@ public class PlayerMovement : MonoBehaviour
     public Transform handPoint; // Point where the player holds items
     public Vector3 screenOffset = new Vector3(0.3f,-0.3f,0.5f);
     public float handReach = 1.5f; // Distance the player can reach with their hand
-    public float moveSpeed = 5f;
+    public float moveSpeed = 2f;
     public float sprintMultiplier = 1.5f;
     public float jumpForce = 4f;
     GameObject heldItem; // Currently held item
@@ -24,11 +24,15 @@ public class PlayerMovement : MonoBehaviour
     private float horizontalInput;
     private float verticalInput;
 
+    private float originalSpeed;
+
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         player = GetComponent<Player>();
+
+        originalSpeed = moveSpeed;
         // Prevent player from tipping over
         rb.freezeRotation = true;
         // Lock cursor to center
@@ -67,6 +71,16 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && IsGrounded())
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+        }
+
+        // --- Sprint ---
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            moveSpeed = sprintMultiplier * moveSpeed;
+        }
+        else
+        {
+            moveSpeed = originalSpeed;
         }
     
     }

@@ -1712,7 +1712,7 @@ MonoBehaviour:
   handPoint: {fileID: 482110320}
   screenOffset: {x: 0.3, y: -0.3, z: 0.5}
   handReach: 2.5
-  moveSpeed: 3
+  moveSpeed: 2
   sprintMultiplier: 1.5
   jumpForce: 5
   cameraTransform: {fileID: 1068264207}
@@ -1823,7 +1823,7 @@ Transform:
   m_GameObject: {fileID: 825332119}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.46504134, z: -0, w: 0.885289}
-  m_LocalPosition: {x: -30.571, y: -0.181, z: 7.996}
+  m_LocalPosition: {x: -32.73, y: 2.871, z: -3.89}
   m_LocalScale: {x: 0.64, y: 0.85033, z: 0.5823}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1838,7 +1838,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 825332119}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: bc7f135bfa7b48640ad60c4bf5889f3b, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -2349,6 +2349,42 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 8e731ad8e513f264c9dc9720fe80af1a, type: 2}
+    - target: {fileID: -4292154010595695564, guid: 803c257f07a0d5949a4c0bc6a2e2fe8d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -67.9
+      objectReference: {fileID: 0}
+    - target: {fileID: -4292154010595695564, guid: 803c257f07a0d5949a4c0bc6a2e2fe8d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.64
+      objectReference: {fileID: 0}
+    - target: {fileID: -4292154010595695564, guid: 803c257f07a0d5949a4c0bc6a2e2fe8d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 5.37
+      objectReference: {fileID: 0}
+    - target: {fileID: -4292154010595695564, guid: 803c257f07a0d5949a4c0bc6a2e2fe8d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.49739075
+      objectReference: {fileID: 0}
+    - target: {fileID: -4292154010595695564, guid: 803c257f07a0d5949a4c0bc6a2e2fe8d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.5025957
+      objectReference: {fileID: 0}
+    - target: {fileID: -4292154010595695564, guid: 803c257f07a0d5949a4c0bc6a2e2fe8d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.49739078
+      objectReference: {fileID: 0}
+    - target: {fileID: -4292154010595695564, guid: 803c257f07a0d5949a4c0bc6a2e2fe8d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.5025957
+      objectReference: {fileID: 0}
+    - target: {fileID: -4292154010595695564, guid: 803c257f07a0d5949a4c0bc6a2e2fe8d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: -4292154010595695564, guid: 803c257f07a0d5949a4c0bc6a2e2fe8d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 90.596
+      objectReference: {fileID: 0}
     - target: {fileID: -3359158289806789542, guid: 803c257f07a0d5949a4c0bc6a2e2fe8d, type: 3}
       propertyPath: m_LocalScale.z
       value: 80
@@ -2859,7 +2895,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
+  near clip plane: 0.01
   far clip plane: 1000
   field of view: 90
   orthographic: 0
@@ -5048,10 +5084,10 @@ MonoBehaviour:
   rotationArc: 180
   forwardArc: 10
   detectRange: 20
-  wCount: 10
-  hCount: 7
+  wCount: 15
+  hCount: 5
   detectWidth: 90
-  detectHeight: 45
+  detectHeight: 60
 --- !u!143 &2042512515
 CharacterController:
   m_ObjectHideFlags: 0
