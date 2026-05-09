@@ -24,13 +24,13 @@ public class EnemyAI : MonoBehaviour
 
     public float detectRange = 20;
 
-    public int wCount = 5;
+    public int wCount = 10;
 
-    public int hCount = 5;
+    public int hCount = 7;
 
     public float detectWidth = 90f;
 
-    public float detectHeight = 90f;
+    public float detectHeight = 45f;
 
     private IEnemyState currentState;
 

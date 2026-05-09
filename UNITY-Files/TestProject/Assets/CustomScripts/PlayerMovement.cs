@@ -16,6 +16,8 @@ public class PlayerMovement : MonoBehaviour
     public Transform cameraTransform; // Reference to the player's camera
     public float mouseSensitivity = 2f;
 
+    public GameManager gameManager; // Reference to GameManager for handling pause
+
     private Rigidbody rb;
     private Player player; // Reference to Player class
     private Door door; // Reference to Door class
@@ -40,6 +42,8 @@ public class PlayerMovement : MonoBehaviour
         rb.freezeRotation = true;
         // Lock cursor to center
         Cursor.lockState = CursorLockMode.Locked;
+
+
     }
 
     void Update()
@@ -54,36 +58,44 @@ public class PlayerMovement : MonoBehaviour
         {
             DropObject();
         }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            gameManager.PauseGame();
+        }
            
         // --- Mouse Look ---
-        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
-        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;
-
-        xRotation -= mouseY;
-        xRotation = Mathf.Clamp(xRotation, -90f, 90f); // prevent flipping camera
-        cameraTransform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
-
-        // Rotate the player left/right
-        transform.Rotate(Vector3.up * mouseX);
-
-        // --- Input ---
-        horizontalInput = Input.GetAxis("Horizontal"); // A/D keys
-        verticalInput = Input.GetAxis("Vertical");     // W/S keys
-
-        // --- Jump ---
-        if (Input.GetKeyDown(KeyCode.Space) && IsGrounded())
+        if(Time.timeScale != 0f)
         {
-            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-        }
+            float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
+            float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;
 
-        // --- Sprint ---
-        if (Input.GetKey(KeyCode.LeftShift))
-        {
-            moveSpeed = sprintMultiplier * originalSpeed;
-        }
-        else
-        {
-            moveSpeed = originalSpeed;
+            xRotation -= mouseY;
+            xRotation = Mathf.Clamp(xRotation, -90f, 90f); // prevent flipping camera
+            cameraTransform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+
+            // Rotate the player left/right
+            transform.Rotate(Vector3.up * mouseX);
+
+            // --- Input ---
+            horizontalInput = Input.GetAxis("Horizontal"); // A/D keys
+            verticalInput = Input.GetAxis("Vertical");     // W/S keys
+
+            // --- Jump ---
+            if (Input.GetKeyDown(KeyCode.Space) && IsGrounded())
+            {
+                rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            }
+
+            // --- Sprint ---
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                moveSpeed = sprintMultiplier * originalSpeed;
+            }
+            else
+            {
+                moveSpeed = originalSpeed;
+            }
         }
     
     }

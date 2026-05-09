@@ -48,7 +48,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _BumpScale: 1
+    - _BumpScale: 15
     - _Glossiness: 0.054
     - _Smoothness: 0.054
     m_Colors: []
